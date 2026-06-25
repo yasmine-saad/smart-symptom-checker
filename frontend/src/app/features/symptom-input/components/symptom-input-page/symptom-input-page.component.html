@@ -1,0 +1,184 @@
+<!-- ============================================================
+  FILE: symptom-input-page.component.html
+  SMART COMPONENT — بيمرر كل حاجة للـ Dumb components
+  ============================================================ -->
+
+<div class="input-page">
+
+  <!-- ── HEADER ───────────────────────────────────────────── -->
+  <header class="page-header">
+    <div class="header-content">
+      <div class="logo">
+        <span class="logo-icon">🏥</span>
+        <div>
+          <h1 class="logo-title">SymptomAI</h1>
+          <p class="logo-sub">Medical Triage Assistant</p>
+        </div>
+      </div>
+
+      <!-- History link -->
+      @if ($any(facade).recordsCount() > 0) {
+        <a routerLink="/history" class="history-link" matTooltip="View past analyses">
+          <mat-icon>history</mat-icon>
+          {{ $any(facade).recordsCount() }} past {{ $any(facade).recordsCount() === 1 ? 'analysis' : 'analyses' }}
+        </a>
+      }
+    </div>
+  </header>
+
+  <!-- ── DISCLAIMER ───────────────────────────────────────── -->
+  <div class="disclaimer">
+    <mat-icon>info_outline</mat-icon>
+    <span>
+      This tool provides <strong>triage guidance only</strong> — not a medical diagnosis.
+      Always consult a qualified healthcare professional.
+    </span>
+  </div>
+
+  <!-- ── MAIN FORM ────────────────────────────────────────── -->
+  <main class="form-wrapper">
+
+    <div class="form-card">
+
+      <!-- ── Section 1: Text Input ─────────────────────────── -->
+      <section class="form-section">
+        <div class="section-header">
+          <span class="section-num">1</span>
+          <div>
+            <h2 class="section-title">Describe your symptoms</h2>
+            <p class="section-sub">Write in English or Arabic — any language is supported</p>
+          </div>
+        </div>
+
+        <!--
+          DUMB COMPONENT: SymptomTextInputComponent
+          بنمرر الـ value وبنستقبل التغيير
+        -->
+        <app-symptom-text-input
+          [value]="textInput()"
+          [isLoading]="isLoading()"
+          [charsRemaining]="charsRemaining()"
+          [nearLimit]="nearLimit()"
+          (valueChange)="onTextChange($event)" />
+      </section>
+
+      <!-- ── Section 2: Quick Chips ────────────────────────── -->
+      <section class="form-section">
+        <div class="section-header">
+          <span class="section-num">2</span>
+          <div>
+            <h2 class="section-title">Quick symptom selection</h2>
+            <p class="section-sub">Optional — tap to add common symptoms</p>
+          </div>
+        </div>
+
+        <!--
+          DUMB COMPONENT: SymptomChipsComponent
+        -->
+        <app-symptom-chips
+          [selected]="selectedChips()"
+          [disabled]="isLoading()"
+          (selectionChange)="onChipsChange($event)" />
+      </section>
+
+      <!-- ── Section 3: Advanced Options ──────────────────── -->
+      <section class="form-section">
+        <button
+          class="advanced-toggle"
+          type="button"
+          (click)="showAdvanced.set(!showAdvanced())">
+          <mat-icon>{{ showAdvanced() ? 'expand_less' : 'expand_more' }}</mat-icon>
+          {{ showAdvanced() ? 'Hide' : 'Show' }} additional details
+        </button>
+
+        @if (showAdvanced()) {
+          <div class="advanced-options">
+
+            <!-- Body Map -->
+            <div class="option-group">
+              <label class="option-label">Where is the pain or discomfort?</label>
+              <!--
+                DUMB COMPONENT: BodyMapComponent
+              -->
+              <app-body-map
+                [selected]="selectedBodyPart()"
+                [disabled]="isLoading()"
+                (selectionChange)="onBodyPartChange($event)" />
+            </div>
+
+            <!-- Age + Duration -->
+            <div class="meta-row">
+              <div class="option-group">
+                <label class="option-label" for="age">Patient age (optional)</label>
+                <input
+                  id="age"
+                  class="meta-input"
+                  type="number"
+                  min="1" max="120"
+                  placeholder="e.g. 35"
+                  [value]="patientAge()"
+                  (input)="patientAge.set(+$any($event.target).value || null)"
+                  [disabled]="isLoading()" />
+              </div>
+
+              <div class="option-group">
+                <label class="option-label" for="duration">Duration (days, optional)</label>
+                <input
+                  id="duration"
+                  class="meta-input"
+                  type="number"
+                  min="0" max="365"
+                  placeholder="e.g. 3"
+                  [value]="durationDays()"
+                  (input)="durationDays.set(+$any($event.target).value || null)"
+                  [disabled]="isLoading()" />
+              </div>
+            </div>
+
+          </div>
+        }
+      </section>
+
+      <!-- ── Error State ───────────────────────────────────── -->
+      @if (error()) {
+        <!--
+          SHARED DUMB COMPONENT: ErrorStateComponent
+        -->
+        <app-error-state
+          [message]="error()!.message"
+          [retryable]="error()!.retryable"
+          (retry)="onRetry()" />
+      }
+
+      <!-- ── Submit Button ─────────────────────────────────── -->
+      <div class="submit-section">
+        <button
+          class="submit-btn"
+          type="button"
+          [disabled]="!canSubmit()"
+          (click)="onSubmit()">
+
+          @if (isLoading()) {
+            <span class="loading-content">
+              <span class="spinner"></span>
+              Analyzing symptoms...
+            </span>
+          } @else {
+            <span class="submit-content">
+              <mat-icon>search</mat-icon>
+              Analyze Symptoms
+            </span>
+          }
+        </button>
+
+        @if (!canSubmit() && !isLoading()) {
+          <p class="submit-hint">
+            Please describe your symptoms (at least 10 characters) to continue
+          </p>
+        }
+      </div>
+
+    </div>
+  </main>
+
+</div>

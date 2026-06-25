@@ -1,0 +1,184 @@
+// =============================================================
+// FILE: history-card.component.scss
+// =============================================================
+
+:host { display: block; }
+
+.history-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid;    // اللون بيتحدد من الـ severity
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.18s, box-shadow 0.18s;
+
+  &:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+// ── Top Row ───────────────────────────────────────────────────
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.meta-date {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+
+.cache-label {
+  font-size: 0.68rem;
+  padding: 2px 8px;
+  background: rgba(var(--color-primary-rgb), 0.08);
+  color: var(--color-primary);
+  border-radius: 100px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+.card-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  transition: all 0.18s;
+
+  mat-icon { font-size: 1rem; height: 1rem; width: 1rem; }
+
+  &:hover {
+    background: rgba(var(--color-primary-rgb), 0.08);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  &.danger:hover {
+    background: rgba(220, 38, 38, 0.08);
+    border-color: var(--color-danger);
+    color: var(--color-danger);
+  }
+}
+
+// ── Specialty ─────────────────────────────────────────────────
+.card-specialty {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.specialty-icon { font-size: 1.1rem; }
+
+.specialty-en {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-right: 6px;
+}
+
+.specialty-ar {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+// ── Symptoms ──────────────────────────────────────────────────
+.card-symptoms {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+// ── Chips ─────────────────────────────────────────────────────
+.card-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.card-chip {
+  font-size: 0.72rem;
+  padding: 3px 10px;
+  background: rgba(var(--color-primary-rgb), 0.06);
+  border: 1px solid rgba(var(--color-primary-rgb), 0.15);
+  border-radius: 100px;
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+// ── Footer ────────────────────────────────────────────────────
+.card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-border);
+}
+
+.confidence-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.confidence-label {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  min-width: 70px;
+}
+
+.confidence-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--color-border);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.confidence-fill {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 0.6s ease;
+}
+
+.confidence-pct {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  min-width: 32px;
+  text-align: right;
+}
+
+.emergency-flag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #dc2626;
+}

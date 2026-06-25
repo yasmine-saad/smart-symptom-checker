@@ -1,0 +1,104 @@
+/* =============================================================
+   FILE: styles/_variables.scss
+   PURPOSE: Design tokens — Single Source of Truth للـ styling
+
+   ARCHITECTURAL DECISION:
+   كل الـ colors والـ spacing والـ typography من هنا.
+   لو عايزين نغير اللون الأساسي — بنغير سطر واحد.
+   ============================================================= */
+
+:root {
+  // ── Brand Colors ─────────────────────────────────────────
+  --color-primary:        #2563eb;
+  --color-primary-rgb:    37, 99, 235;     // for rgba() usage
+  --color-primary-dark:   #1d4ed8;
+  --color-primary-light:  #eff6ff;
+
+  // ── Semantic Colors ───────────────────────────────────────
+  --color-success:        #10b981;
+  --color-success-rgb:    16, 185, 129;
+  --color-warning:        #f59e0b;
+  --color-warning-rgb:    245, 158, 11;
+  --color-danger:         #dc2626;
+  --color-danger-rgb:     220, 38, 38;
+  --color-emergency:      #7f1d1d;
+
+  // ── Neutral (Light Mode) ──────────────────────────────────
+  --color-bg:             #f0f4ff;
+  --color-bg-subtle:      #f8faff;
+  --color-surface:        #ffffff;
+  --color-border:         #e2e8f0;
+  --color-text:           #0f172a;
+  --color-text-muted:     #64748b;
+
+  // ── Shadows ───────────────────────────────────────────────
+  --shadow-sm:  0 1px 3px rgba(0,0,0,.08);
+  --shadow-md:  0 4px 16px rgba(0,0,0,.06);
+  --shadow-lg:  0 8px 32px rgba(0,0,0,.10);
+
+  // ── Typography ────────────────────────────────────────────
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  // ── Spacing ───────────────────────────────────────────────
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-6:  24px;
+  --space-8:  32px;
+
+  // ── Border Radius ─────────────────────────────────────────
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  14px;
+  --radius-xl:  20px;
+}
+
+/* =============================================================
+   FILE: styles/styles.scss
+   Global styles
+   ============================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+* , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+// ── Accessibility ─────────────────────────────────────────────
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+// ── Angular Material Customization ────────────────────────────
+.mat-mdc-form-field-subscript-wrapper { display: none; }
+
+// ── View Transitions (Angular 17+) ───────────────────────────
+@keyframes fade-in  { from { opacity: 0; transform: translateY(8px); } }
+@keyframes fade-out { to   { opacity: 0; transform: translateY(-8px); } }
+
+::view-transition-old(root) { animation: 200ms fade-out ease forwards; }
+::view-transition-new(root) { animation: 300ms fade-in  ease forwards; }
+
+// ── RTL Support (Arabic) ──────────────────────────────────────
+[dir="rtl"] {
+  text-align: right;
+}
+
+// ── Scrollbar ─────────────────────────────────────────────────
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 100px; }

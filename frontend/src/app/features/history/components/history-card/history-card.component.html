@@ -1,0 +1,83 @@
+<!-- ============================================================
+  FILE: history-card.component.html
+  ============================================================ -->
+
+<article class="history-card" [style.border-left-color]="severityConfig.color">
+
+  <!-- ── TOP ROW ─────────────────────────────────────────── -->
+  <div class="card-top">
+
+    <div class="card-meta">
+      <app-severity-badge [severity]="record.result.severity" size="small" />
+      <span class="meta-date">
+        {{ record.createdAt | date:'MMM d, y · h:mm a' }}
+      </span>
+      @if (record.result.fromCache) {
+        <span class="cache-label" matTooltip="Result from cache">cached</span>
+      }
+    </div>
+
+    <div class="card-actions">
+      <button
+        class="action-btn"
+        matTooltip="Re-analyze with same symptoms"
+        (click)="onReAnalyze()"
+        aria-label="Re-analyze">
+        <mat-icon>refresh</mat-icon>
+      </button>
+      <button
+        class="action-btn danger"
+        matTooltip="Delete this record"
+        (click)="onDelete()"
+        aria-label="Delete">
+        <mat-icon>delete_outline</mat-icon>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ── SPECIALTY ───────────────────────────────────────── -->
+  <div class="card-specialty">
+    <span class="specialty-icon">🩺</span>
+    <div>
+      <span class="specialty-en">{{ record.result.specialty }}</span>
+      <span class="specialty-ar">{{ record.result.specialtyAr }}</span>
+    </div>
+  </div>
+
+  <!-- ── SYMPTOMS TEXT ───────────────────────────────────── -->
+  <p class="card-symptoms">{{ truncatedText }}</p>
+
+  <!-- ── CHIPS (if any) ──────────────────────────────────── -->
+  @if (record.input.selectedChips?.length) {
+    <div class="card-chips">
+      @for (chip of record.input.selectedChips!; track chip) {
+        <span class="card-chip">{{ chip }}</span>
+      }
+    </div>
+  }
+
+  <!-- ── CONFIDENCE ──────────────────────────────────────── -->
+  <div class="card-footer">
+    <div class="confidence-row">
+      <span class="confidence-label">Confidence</span>
+      <div class="confidence-bar">
+        <div
+          class="confidence-fill"
+          [style.width.%]="record.result.confidence * 100"
+          [style.background]="severityConfig.color">
+        </div>
+      </div>
+      <span class="confidence-pct">
+        {{ (record.result.confidence * 100) | number:'1.0-0' }}%
+      </span>
+    </div>
+
+    @if (record.result.seekEmergencyCare) {
+      <span class="emergency-flag">
+        🚨 Emergency care was recommended
+      </span>
+    }
+  </div>
+
+</article>

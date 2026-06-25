@@ -1,0 +1,14 @@
+<!-- ============================================================
+  FILE: app.component.html
+  App Shell — Router outlet + Global loading bar
+  ============================================================ -->
+
+<!-- Global Top Loading Bar -->
+@if (isLoading()) {
+  <div class="global-loader" role="progressbar" aria-label="Loading">
+    <div class="loader-bar"></div>
+  </div>
+}
+
+<!-- Router Outlet — بيعرض الـ current page -->
+<router-outlet />

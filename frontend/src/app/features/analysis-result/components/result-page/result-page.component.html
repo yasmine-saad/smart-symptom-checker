@@ -1,0 +1,110 @@
+<!-- ============================================================
+  FILE: result-page.component.html
+  ============================================================ -->
+
+<div class="result-page">
+
+  @if (result()) {
+    <!-- ── EMERGENCY ALERT (أول حاجة تظهر) ──────────────── -->
+    @if (isEmergency()) {
+      <app-emergency-alert />
+    }
+
+    <!-- ── HEADER ──────────────────────────────────────────── -->
+    <header class="result-header" [class.emergency]="isEmergency()">
+      <div class="header-content">
+
+        <div class="header-left">
+          <button class="back-btn" (click)="onStartOver()">
+            <mat-icon>arrow_back</mat-icon>
+            New Analysis
+          </button>
+        </div>
+
+        <div class="header-center">
+          <h1 class="result-title">Analysis Complete</h1>
+          <p class="result-meta">
+            {{ result()!.analyzedAt | date:'MMM d, y · h:mm a' }}
+            @if (result()!.fromCache) {
+              <span class="cache-badge">· from cache</span>
+            }
+          </p>
+        </div>
+
+        <div class="header-right">
+          <app-severity-badge [severity]="result()!.severity" size="large" />
+        </div>
+
+      </div>
+    </header>
+
+    <!-- ── MAIN CONTENT ────────────────────────────────────── -->
+    <main class="result-content">
+
+      <div class="results-grid">
+
+        <!-- ── Severity Card ─────────────────────────────── -->
+        <app-severity-card
+          [severity]="result()!.severity"
+          [confidence]="result()!.confidence"
+          [explanation]="result()!.explanation" />
+
+        <!-- ── Specialty Card ────────────────────────────── -->
+        <app-specialty-card
+          [specialty]="result()!.specialty"
+          [specialtyAr]="result()!.specialtyAr" />
+
+        <!-- ── Recommendations ───────────────────────────── -->
+        <app-recommendations-list
+          class="full-width"
+          [recommendations]="result()!.recommendations"
+          [severity]="result()!.severity" />
+
+      </div>
+
+      <!-- ── Input Summary ─────────────────────────────────── -->
+      @if (input()) {
+        <div class="input-summary">
+          <h3 class="summary-title">
+            <mat-icon>notes</mat-icon>
+            Your reported symptoms
+          </h3>
+          <p class="summary-text">{{ input()!.textInput }}</p>
+          @if (input()!.selectedChips?.length) {
+            <div class="summary-chips">
+              @for (chip of input()!.selectedChips!; track chip) {
+                <span class="summary-chip">{{ chip }}</span>
+              }
+            </div>
+          }
+        </div>
+      }
+
+      <!-- ── DISCLAIMER ──────────────────────────────────── -->
+      <div class="result-disclaimer">
+        <mat-icon>shield</mat-icon>
+        <p>
+          This assessment is for <strong>triage guidance only</strong> and does not
+          constitute a medical diagnosis. Confidence level:
+          <strong>{{ (result()!.confidence * 100) | number:'1.0-0' }}%</strong>.
+          Always consult a qualified healthcare professional before making
+          any medical decisions.
+        </p>
+      </div>
+
+      <!-- ── ACTIONS ──────────────────────────────────────── -->
+      <div class="result-actions">
+        <button class="btn-secondary" (click)="onReAnalyze()">
+          <mat-icon>refresh</mat-icon>
+          Re-analyze
+        </button>
+        <button class="btn-primary" (click)="onStartOver()">
+          <mat-icon>add</mat-icon>
+          New Analysis
+        </button>
+      </div>
+
+    </main>
+  }
+
+</div>

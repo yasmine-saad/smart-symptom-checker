@@ -1,0 +1,169 @@
+<!-- ============================================================
+  FILE: history-page.component.html
+  ============================================================ -->
+
+<div class="history-page">
+
+  <!-- ── HEADER ───────────────────────────────────────────── -->
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <a routerLink="/" class="back-btn">
+          <mat-icon>arrow_back</mat-icon>
+          New Analysis
+        </a>
+      </div>
+
+      <div class="header-center">
+        <h1 class="page-title">
+          <mat-icon>history</mat-icon>
+          Analysis History
+        </h1>
+      </div>
+
+      <div class="header-right">
+        <span class="record-count">
+          {{ recordsCount() }} {{ recordsCount() === 1 ? 'record' : 'records' }}
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main class="history-content">
+
+    <!-- ── EMPTY STATE ────────────────────────────────────── -->
+    @if (allRecords().length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        <h2 class="empty-title">No analyses yet</h2>
+        <p class="empty-text">
+          Your symptom analyses will appear here after you run your first check.
+        </p>
+        <a routerLink="/" class="btn-primary">
+          <mat-icon>search</mat-icon>
+          Start Analysis
+        </a>
+      </div>
+
+    } @else {
+
+      <!-- ── STATS BAR ─────────────────────────────────────── -->
+      <div class="stats-bar">
+
+        <div class="stat-item">
+          <span class="stat-num">{{ stats().total }}</span>
+          <span class="stat-label">Total</span>
+        </div>
+
+        @if (stats().emergency > 0) {
+          <div class="stat-item emergency">
+            <span class="stat-num">{{ stats().emergency }}</span>
+            <span class="stat-label">🚨 Emergency</span>
+          </div>
+        }
+
+        @if (stats().high > 0) {
+          <div class="stat-item high">
+            <span class="stat-num">{{ stats().high }}</span>
+            <span class="stat-label">🔴 High</span>
+          </div>
+        }
+
+        @if (stats().medium > 0) {
+          <div class="stat-item medium">
+            <span class="stat-num">{{ stats().medium }}</span>
+            <span class="stat-label">🟡 Medium</span>
+          </div>
+        }
+
+        @if (stats().low > 0) {
+          <div class="stat-item low">
+            <span class="stat-num">{{ stats().low }}</span>
+            <span class="stat-label">🟢 Low</span>
+          </div>
+        }
+
+      </div>
+
+      <!-- ── FILTERS ───────────────────────────────────────── -->
+      <div class="filters-bar">
+
+        <!-- Search -->
+        <div class="search-wrapper">
+          <mat-icon class="search-icon">search</mat-icon>
+          <input
+            class="search-input"
+            type="text"
+            placeholder="Search symptoms or specialty..."
+            [value]="searchText()"
+            (input)="searchText.set($any($event.target).value)"
+            aria-label="Search analyses" />
+          @if (searchText()) {
+            <button class="clear-search" (click)="searchText.set('')" aria-label="Clear search">
+              <mat-icon>close</mat-icon>
+            </button>
+          }
+        </div>
+
+        <!-- Severity Filter -->
+        <div class="severity-filter">
+          @for (opt of severityOptions; track opt.value) {
+            <button
+              class="filter-chip"
+              [class.active]="filterSeverity() === opt.value"
+              (click)="filterSeverity.set($any(opt.value))">
+              {{ opt.label }}
+            </button>
+          }
+        </div>
+
+        <!-- Clear Filters -->
+        @if (hasActiveFilter()) {
+          <button class="clear-filters-btn" (click)="clearFilters()">
+            <mat-icon>filter_alt_off</mat-icon>
+            Clear filters
+          </button>
+        }
+
+      </div>
+
+      <!-- ── RESULTS COUNT ─────────────────────────────────── -->
+      @if (hasActiveFilter()) {
+        <p class="filter-result-count">
+          Showing {{ filteredRecords().length }} of {{ allRecords().length }} analyses
+        </p>
+      }
+
+      <!-- ── RECORDS LIST ──────────────────────────────────── -->
+      @if (filteredRecords().length === 0) {
+
+        <div class="no-results">
+          <mat-icon>search_off</mat-icon>
+          <p>No analyses match your filters</p>
+          <button class="btn-text" (click)="clearFilters()">Clear filters</button>
+        </div>
+
+      } @else {
+
+        <div class="records-list">
+          @for (record of filteredRecords(); track record.id) {
+
+            <!--
+              DUMB COMPONENT: HistoryCardComponent
+              بنمرر كل البيانات كـ @Input ونستقبل الـ events
+            -->
+            <app-history-card
+              [record]="record"
+              (reAnalyze)="onReAnalyze($event)"
+              (delete)="onDelete($event)" />
+
+          }
+        </div>
+
+      }
+
+    }
+
+  </main>
+
+</div>
