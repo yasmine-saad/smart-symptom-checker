@@ -1,7 +1,7 @@
 # 🏥 SymptomAI — Medical Triage Assistant
 
 > **Portfolio Project** — Full-Stack HealthTech Application  
-> Angular 19 + ASP.NET Core 8 + AI Integration
+> Angular 21 + ASP.NET Core 8 + AI Integration
 
 [![Angular](https://img.shields.io/badge/Angular-19-red?logo=angular)](https://angular.dev)
 [![.NET](https://img.shields.io/badge/.NET-8-purple?logo=dotnet)](https://dotnet.microsoft.com)
@@ -166,7 +166,7 @@ symptom-ai/
 
 ### Prerequisites
 - Node.js 20+
-- Angular CLI 19: `npm install -g @angular/cli`
+- Angular CLI 21: `npm install -g @angular/cli`
 - .NET 8 SDK
 - (Optional) OpenAI API key
 
