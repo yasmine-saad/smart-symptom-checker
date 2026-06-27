@@ -3,7 +3,7 @@
 > **Portfolio Project** — Full-Stack HealthTech Application  
 > Angular 21 + ASP.NET Core 8 + AI Integration
 
-[![Angular](https://img.shields.io/badge/Angular-19-red?logo=angular)](https://angular.dev)
+[![Angular](https://img.shields.io/badge/Angular-21-red?logo=angular)](https://angular.dev)
 [![.NET](https://img.shields.io/badge/.NET-8-purple?logo=dotnet)](https://dotnet.microsoft.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?logo=typescript)](https://www.typescriptlang.org)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
@@ -51,7 +51,7 @@ SymptomAI is a production-grade HealthTech platform where users describe their s
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│  Angular 19 Frontend                                  │
+│  Angular 21 Frontend                                  │
 │                                                       │
 │  ┌──────────┐   ┌──────────┐   ┌──────────────────┐ │
 │  │  Dumb    │   │  Smart   │   │  Signal Store    │ │
@@ -123,7 +123,7 @@ builder.Services.AddScoped<IAIProvider, OpenAIProvider>();   // Production
 
 ```
 symptom-ai/
-├── frontend/                        # Angular 19 app
+├── frontend/                        # Angular 21 app
 │   └── src/app/
 │       ├── core/
 │       │   ├── models/              # Domain models & interfaces
